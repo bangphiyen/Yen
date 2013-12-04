@@ -1,0 +1,57 @@
+/*
+* Facebook - Delete All Messages
+* Copyright (C) 2013 Mr Viola
+* Contact: Facebook.com/Vicamcodon
+*/
+
+function getLocalizedText(lang) {
+    if(lang.indexOf('English') > -1) {
+        return 'Delete Conversation'
+    } else if(lang.indexOf('Việt') > -1) {
+        return 'Xóa cuộc trò chuyện'
+    }
+    return 'Delete Conversation'
+}
+
+function deleteAll() {
+    if (confirm("Are you sure you wish to proceed?")) {
+        var lang = document.getElementsByClassName('rhcFooterWrap')[0].getElementsByTagName('a')[0].innerHTML;
+
+        var index = -1;
+        var delText = getLocalizedText(lang);
+        var buttons = document.getElementsByClassName('uiMenu uiSelectorMenu')[0].getElementsByTagName('a');
+        for(var i=0;i<buttons.length;i++) {
+            if(buttons[i].innerHTML.indexOf(delText) > -1) {
+                index = i;
+                break;
+            }
+        }
+                
+        if(index==-1) {
+            alert('Problem detected! Please contact the developer (geopiskas@gmail.com) and provide the following information: ('+lang+' '+index+')');
+            return;
+        }
+
+        var convList = document.getElementById('wmMasterViewThreadlist').getElementsByClassName('_k_');
+        
+        function deleteConv(){
+            timer = setTimeout(deleteConv, 0);
+            convList[0].click();
+            document.getElementsByClassName('uiSelectorButton')[0].click();
+            document.getElementsByClassName('uiMenu uiSelectorMenu')[0].getElementsByTagName('a')[index].click();
+            document.getElementsByName('delete_conversation')[0].click();
+            if(convList.length==0) {
+                clearInterval(timer);
+                alert('The listed conversations have been deleted!\If not, contact the Master (Facebook.com/Vicamcodon) and provide the following information: ('+lang+' '+index+')');
+            }
+        }
+
+        if(convList.length==0) {
+            alert('No conversation to delete! Your list is already empty.\In case it is not empty and this alert appeared, please contact the Master (Facebook.com/Vicamcodon) and provide the following information: ('+lang+' '+index+')');
+        } else {
+            timer = setTimeout(deleteConv, 0);
+        }
+    }
+}
+
+deleteAll();
